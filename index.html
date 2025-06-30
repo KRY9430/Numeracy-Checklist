@@ -1,0 +1,3163 @@
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   수리력 점검 체크리스트
+  </title>
+  <style>
+   .tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 600px;
+  max-width: 90vw; /* 모바일 환경 대응, 선택 */
+  background-color: #f9f9f9;
+  color: #000;
+  text-align: left;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 0;
+  white-space: pre-line;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+th, td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+th {
+  background-color: #f2f2f2;
+}
+.control-panel{
+  margin-top:10px;
+  margin-bottom:10px;
+}
+#checklistTable td:nth-child(9) { background-color: #f0f0f0; }</style>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js">
+  </script>
+ </head>
+ <body>
+  <h2>
+   수리력 점검 체크리스트
+  </h2>
+  <div class="control-panel">
+   학년 범위:
+   <select id="startGrade">
+    <option value="1">
+     1학년
+    </option>
+    <option value="2">
+     2학년
+    </option>
+    <option value="3">
+     3학년
+    </option>
+    <option value="4">
+     4학년
+    </option>
+    <option value="5">
+     5학년
+    </option>
+    <option value="6">
+     6학년
+    </option>
+   </select>
+   ~
+   <select id="endGrade">
+    <option value="1">
+     1학년
+    </option>
+    <option value="2">
+     2학년
+    </option>
+    <option value="3">
+     3학년
+    </option>
+    <option value="4">
+     4학년
+    </option>
+    <option value="5">
+     5학년
+    </option>
+    <option selected="selected" value="6">
+     6학년
+    </option>
+   </select>
+   <button onclick="applyFilter()">
+    적용
+   </button>
+   <button onclick="resetFilter()">
+    초기화
+   </button>
+  </div>
+  <table id="checklistTable">
+   <thead>
+    <tr>
+     <th colspan="1" rowspan="2">
+      영역
+     </th>
+     <th colspan="1" rowspan="2">
+      하위 요소
+     </th>
+     <th colspan="1" rowspan="2">
+      학년
+     </th>
+     <th colspan="1" rowspan="2">
+      점검 내용
+     </th>
+     <th colspan="1" rowspan="1">
+      미도달
+     </th>
+     <th colspan="3" rowspan="1">
+      수행정도
+     </th>
+     <th colspan="1" rowspan="2">
+      관찰 보류
+     </th>
+     <th colspan="1" rowspan="2">
+      평정 근거
+     </th>
+    </tr>
+    <tr>
+     <th>
+      전혀 그렇지 않다
+     </th>
+     <th>
+      어느 정도 그렇다
+     </th>
+     <th>
+      대부분 그렇다
+     </th>
+     <th>
+      항상 그렇다
+     </th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr data-grade="1">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      1
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 100까지의 수를 셀 수 있다.
+       <div class="tooltiptext">[1] 9까지의 수를 셀 수 있다.<br/>[1] 100까지의 수를 셀 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_0" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_0" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_0" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_0" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_0" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="2">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      2
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 네 자리 이하의 수를 읽고 쓸 수 있다.
+       <div class="tooltiptext">[2] 백, 몇백을 알고 세 자리 수를 읽고 쓸 수 있다.<br/>[2] 천, 몇천을 알고 네 자리 수를 읽고 쓸 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_1" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_1" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_1" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_1" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_1" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="2">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      2
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 네 자리 이하의 범위에서 두 수의 크기를 비교할 수 있다.
+       <div class="tooltiptext">[2] 세 자리 수의 범위에서 두 수의 크기를 비교할 수 있다.<br/>[2] 네 자리 수의 범위에서 두 수의 크기를 비교할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_2" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_2" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_2" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_2" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_2" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      3
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 분수를 읽고 쓸 수 있다.
+       <div class="tooltiptext">[3] 그림을 보고 분수로 나타낼 수 있다.<br/>[3] 분모와 분자를 구별하여 분수를 읽고 쓸 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_3" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_3" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_3" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_3" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_3" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      3
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 진분수, 가분수, 대분수를 구분하고, 대분수를 가분수로, 가분수를 대분수로 나타낼 수 있다.
+       <div class="tooltiptext">[3] 분모와 분자를 비교하여 진분수와 가분수를 구분할 수 있다.<br/>[3] 대분수를 알고, 대분수를 가분수로, 가분수를 대분수로 나타낼 수 있다.<br/>※필요한 경우 대분수를 가분수, 가분수를 대분수로 나타내는 절차를 안내한다.</div></div>
+     </td>
+     <td>
+      <input name="level_4" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_4" type="radio" value="s어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_4" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_4" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_4" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      3
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 분모가 같은 분수끼리 크기를 비교할 수 있다.
+       <div class="tooltiptext">[3] 단위분수의 크기를 비교할 수 있다.<br/>[3] 분모가 같은 진분수의 크기를 비교할 수 있다.<br/>[3] 분모가 같은 가분수와 대분수의 크기를 비교할 수 있다.<br/>※필요한 경우 구체물이나 그림을 보고 크기를 비교하게 한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_5" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_5" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_5" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_5" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_5" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      3
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 1/10=0.1임을 알고, 소수 한 자리 수를 읽고 쓸 수 있다.
+       <div class="tooltiptext">[3] 1/10=0.1임을 안다.<br/>[3] 1보다 작은 소수 한 자리 수를 읽고 쓸 수 있다.<br/>[3] 1보다 큰 소수 한 자리 수를 읽고 쓸 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_6" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_6" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_6" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_6" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_6" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3~4">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      3~4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 간단한 두 소수의 크기를 비교할 수 있다.
+       <div class="tooltiptext">[3] 한 자리의 두 소수의 크기를 비교할 수 있다.<br/>[4] 두 자리 및 세 자리의 두 소수의 크기를 비교할 수 있다.<br/>※필요한 경우 구체물이나 그림을 이용하여 크기를 비교하게 한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_7" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_7" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_7" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_7" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_7" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="4">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 분모가 100, 1000인 분수를 소수로 나타내고, 그 소수를 읽을 수 있다.
+       <div class="tooltiptext">[4] 분모가 100인 분수를 소수로 나타내고, 그 소수를 읽을 수 있다.<br/>[4] 분모가 1000인 분수를 소수로 나타내고, 그 소수를 읽을 수 있다.<br/>※필요한 경우 분수를 소수로 나타내는 절차를 안내한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_8" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_8" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_8" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_8" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_8" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="4">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 10000 이상의 수에서 각 자리의 숫자가 나타내는 수를 알고, 수를 읽고 쓸 수 있다.
+       <div class="tooltiptext">[4] 다섯 자리 수를 이해하고, 읽고, 쓸 수 있다.<br/>[4] 십만, 백만, 천만 단위의 수를 이해하고, 읽고, 쓸 수 있다.<br/>[4] 억부터 천조 단위까지의 수를 이해하고, 읽고, 쓸 수 있다.<br/>※필요한 경우 수 카드 등을 이용하여 수를 읽고 쓰게 한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_9" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_9" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_9" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_9" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_9" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="4">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 다섯 자리 이상의 수의 범위에 두 수의 크기를 비교할 수 있다.
+       <div class="tooltiptext">[4] 다섯 자리 이상의 수의 범위에서 두 수의 크기를 비교할 수 있다.<br/>※필요한 경우 두 수의 크기를 비교하는 절차를 안내한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_10" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_10" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_10" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_10" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_10" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 주어진 수의 약수와 배수를 구할 수 있다.
+       <div class="tooltiptext">[5] 약수와 배수의 의미를 안다.<br/>[5] 주어진 수의 약수와 배수를 구할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_11" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_11" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_11" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_11" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_11" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 두 수의 공약수와 최대공약수, 공배수와 최소공배수를 구할 수 있다.
+       <div class="tooltiptext">[5] 공약수, 최대공약수, 공배수, 최소공배수의 의미를 안다.<br/>[5] 두 수의 공약수, 최대공약수, 공배수, 최소공배수를 구할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_12" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_12" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_12" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_12" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_12" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 이상, 이하, 초과, 미만을 사용하여 간단한 수의 범위를 나타낼 수 있다.
+       <div class="tooltiptext">[5] 이상, 이하, 초과, 미만의 의미를 안다.<br/>[5] 이상, 이하, 초과, 미만의 범위에 있는 수를 알고, 수직선에 나타낼 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_13" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_13" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_13" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_13" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_13" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수 감각
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 올림, 버림, 반올림을 사용해서 어림값을 나타낼 수 있다.
+       <div class="tooltiptext">[5] 올림, 버림, 반올림의 의미를 안다.<br/>[5] 올림, 버림, 반올림하여 어림값으로 나타낼 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_14" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_14" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_14" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_14" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_14" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="1~2">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      1~2
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 두 자리 수의 범위에서 덧셈을 할 수 있다.
+       <div class="tooltiptext">[1] (몇)+(몇)=(몇)을 계산할 수 있다.<br/>[1] (몇)+(몇)=(십몇)을 계산할 수 있다.<br/>[2] 받아올림이 없는 두 자리 수의 덧셈을 할 수 있다.<br/>[2] 받아올림이 있는 두 자리 수의 덧셈을 할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_15" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_15" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_15" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_15" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_15" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="1~2">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      1~2
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 두 자리 수의 범위에서 뺄셈을 할 수 있다.
+       <div class="tooltiptext">[1] (몇)-(몇)=(몇)을 계산할 수 있다.<br/>[1] (십)-(몇)=(몇)을 계산할 수 있다.<br/>[2] 받아내림이 없는 두 자리 수의 뺄셈을 할 수 있다.<br/>[2] 받아내림이 있는 두 자리 수의 뺄셈을 할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_16" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_16" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_16" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_16" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_16" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="2">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      2
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 한 자리 수의 곱셈을 할 수 있다.
+       <div class="tooltiptext">[2] 곱셈구구를 말할 수 있다.<br/>[2] 각 단의 곱셈구구에서 규칙을 찾을 수 있다.<br/>[2] 한 자리 수의 곱셈을 할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_17" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_17" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_17" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_17" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_17" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      3
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 세 자리 이하인 두 수의 간단한 덧셈과 뺄셈을 할 수 있다.
+       <div class="tooltiptext">[3] 받아내림이 없는 세 자리 수의 덧셈과 뺄셈을 할 수 있다.<br/>[3] 받아올림이 있는 세 자리 수의 덧셈과 뺄셈을 할 수 있다.<br/>※필요한 경우 두 수의 덧셈과 뺄셈에 대한 절차를 안내한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_18" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_18" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_18" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_18" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_18" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      3
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 두 자리 수 이하의 범위에서 간단한 곱셈을 할 수 있다.
+       <div class="tooltiptext">[3] 올림이 없는 (몇십몇)×(몇)을 계산할 수 있다.<br/>[3] 올림이 있는 (몇십몇)×(몇)을 계산할 수 있다.<br/>[3] (몇십몇)×(몇십)을 계산할 수 있다.<br/>[3] (몇십몇)×(몇십몇)을 계산할 수 있다.<br/>※필요한 경우 두 수의 곱셈에 대한 절차를 안내한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_19" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_19" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_19" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_19" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_19" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      3
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 곱셈식을 나눗셈식으로, 나눗셈식을 곱셈식으로 나타낼 수 있다.
+       <div class="tooltiptext">[3] 곱셈식을 나눗셈식으로 나타낼 수 있다.<br/>[3] 나눗셈식을 곱셈식으로 나타낼 수 있다.<br/>[3] 곱셈과 나눗셈의 관계를 안다.<br/>※필요한 경우 곱셈식을 나눗셈식으로, 나눗셈식을 곱셈식으로 나타내는 절차를 안내한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_20" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_20" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_20" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_20" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_20" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      3
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 나누는 수가 한 자리 수인 나눗셈을 할 수 있다.
+       <div class="tooltiptext">[3] 나눗셈의 몫을 곱셈식과 곱셈구구를 이용하여 구할 수 있다.<br/>[3] 내림이 없는 (두 자리 수)÷(한 자리 수)의 몫을 구할 수 있다.<br/>[3] 내림이 있는 (두 자리 수)÷(한 자리 수)의 몫을 구할 수 잇다.<br/>[3] (두 자리 수)÷(한 자리 수)의 몫과 나머지를 구할 수 있다.<br/>[3] (세 자리 수)÷(한 자리 수)의 몫과 나머지를 구할 수 있다.<br/>※필요한 경우 두 수의 나눗셈에 대한 절차를 안내한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_21" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_21" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_21" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_21" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_21" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="4">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 분모가 같은 분수의 간단한 덧셈과 뺄셈을 할 수 있다.
+       <div class="tooltiptext">[4] 두 진분수의 덧셈과 뺄셈을 할 수 있다.<br/>[4] 두 대분수의 합을 구할 수 있다.<br/>[4] 분수끼리 뺄 수 있는 두 진분수의 차를 구할 수 있다.<br/>[4] 분수끼리 뺄 수 없는 두 대분수의 차를 구할 수 있다.<br/>※필요한 경우 분수의 덧셈과 뺄셈에 대한 절차를 안내한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_22" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_22" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_22" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_22" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_22" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="4">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 소수 두 자리 수의 범위에서 간단한 소수의 덧셈과 뺄셈을 할 수 있다.
+       <div class="tooltiptext">[4] 소수 한 자리 수의 덧셈과 뺄셈을 할 수 있다.<br/>[4] 소수 두 자리 수의 덧셈과 뺄셈을 할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_23" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_23" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_23" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_23" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_23" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 덧셈과 곱셈, 뺄셈과 곱셈이 혼합된 계산을 할 수 있다.
+       <div class="tooltiptext">[5] 덧셈, 뺄셈, 곱셈이 섞여 있는 식의 계산 순서를 안다.<br/>[5] 덧셈, 뺄셈, 곱셈이 혼합된 계산을 할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_24" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_24" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_24" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_24" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_24" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 간단한 분수를 통분, 약분하여 크기가 같은 분수를 찾을 수 있다.
+       <div class="tooltiptext">[5] 크기가 같은 분수를 안다.<br/>[5] 분수를 통분, 약분하여 크기가 같은 분수를 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_25" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_25" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_25" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_25" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_25" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 분모가 다른 두 분수의 간단한 덧셈과 뺄셈을 계산할 수 있다.
+       <div class="tooltiptext">[5] 분모가 다른 두 분수를 통분할 수 있다.<br/>[5] 분모가 다른 두 분수의 덧셈과 뺄셈을 계산할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_26" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_26" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_26" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_26" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_26" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ ‘(분수)×(자연수)’의 계산을 할 수 있다.
+       <div class="tooltiptext">[5] (진분수)×(자연수)의 계산을 할 수 있다.<br/>[5] (대분수)×(자연수)의 계산을 할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_27" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_27" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_27" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_27" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_27" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 간단한 ‘(소수)×(자연수)’의 계산을 할 수 있다.
+       <div class="tooltiptext">[5] (1보다 작은 소수)×(자연수)의 계산을 할 수 있다.<br/>[5] (1보다 큰 소수)×(자연수)의 계산을 할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_28" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_28" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_28" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_28" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_28" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ ‘(자연수)÷(자연수)’에서 나눗셈의 몫을 분수로 나타낼 수 있다.
+       <div class="tooltiptext">[6] 몫이 1보다 작은 (자연수)÷(자연수)에서 몫을 분수로 나타낼 수 있다.<br/>[6] 몫이 1보다 큰 (자연수)÷(자연수)에서 몫을 분수로 나타낼 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_29" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_29" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_29" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_29" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_29" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ ‘(분수)÷(자연수)’의 계산을 할 수 있다.
+       <div class="tooltiptext">[6] (분수)÷(자연수)의 계산 원리를 알고 계산할 수 있다.<br/>[6] (분수)÷(자연수)를 곱셈으로 바꾸어 계산할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_30" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_30" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_30" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_30" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_30" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      수와 연산
+     </td>
+     <td>
+      수의 계산
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 간단한 ‘(소수)÷(자연수)’를 계산할 수 있다.
+       <div class="tooltiptext">[6] 각 자리에서 나누어 떨어지는 (소수)÷(자연수)를 자연수의 나눗셈을 이용하여 계산할 수 있다.<br/>[6] 각 자리에서 나누어 떨어지지 않는 (소수)÷(자연수)의 계산 방법을 알고 계산할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_31" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_31" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_31" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_31" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_31" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="1~2">
+     <td>
+      변화와 관계
+     </td>
+     <td>
+      변화와 함수
+     </td>
+     <td>
+      1~2
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 간단한 규칙에 따라 배열된 물체, 무늬, 수 등을 이어서 배열할 수 있다.
+       <div class="tooltiptext">[1], [2] 물체, 무늬, 수 등의 간단한 배열에서 규칙을 찾을 수 있다.<br/>[1], [2] 주어진 규칙에 따라 물체, 무늬, 수 등을 배열할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_32" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_32" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_32" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_32" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_32" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="4">
+     <td>
+      변화와 관계
+     </td>
+     <td>
+      변화와 함수
+     </td>
+     <td>
+      4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 간단한 배열에서 변화 규칙을 찾아 수나 식으로 나타낼 수 있다.
+       <div class="tooltiptext">[4] 간단한 배열에서 변화 규칙을 찾을 수 있다.<br/>[4] 변화 규칙을 수나 식으로 나타낼 수 있다.<br/>※필요한 경우 배열에서 변화 규칙을 찾아 수나 식으로 나타내는 절차를 안내한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_33" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_33" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_33" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_33" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_33" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      변화와 관계
+     </td>
+     <td>
+      변화와 함수
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 대응관계를 나타낸 표의 규칙을 올바르게 설명하는 □, △ 등을 사용한 식을 찾을 수 있다.
+       <div class="tooltiptext">[5] 대응관계를 나타낸 표의 규칙을 찾을 수 있다.<br/>[5] 대응관계를 나타낸 표의 규칙을 올바르게 설명하는 식을 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_34" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_34" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_34" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_34" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_34" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      변화와 관계
+     </td>
+     <td>
+      비와 비율
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 두 양의 크기를 비교하여 비로 나타낼 수 있다.
+       <div class="tooltiptext">[6] 비의 뜻을 안다.<br/>[6] 두 양의 크기를 비의 기호를 사용하여 나타낼 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_35" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_35" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_35" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_35" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_35" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      변화와 관계
+     </td>
+     <td>
+      비와 비율
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 간단한 비율을 분수, 소수, 백분율로 나타낼 수 있다.
+       <div class="tooltiptext">[6] 비율의 뜻을 알고, 분수, 소수로 나타낼 수 있다.<br/>[6] 백분율의 뜻을 알고, 비율을 백분율로 나타낼 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_36" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_36" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_36" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_36" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_36" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      변화와 관계
+     </td>
+     <td>
+      비와 비율
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 비례식을 알고, 간단한 비례식을 풀 수 있다.
+       <div class="tooltiptext">[6] 비례식을 안다.<br/>[6] 비례식의 성질을 알고, 간단한 비례식을 풀 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_37" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_37" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_37" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_37" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_37" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="1">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      입체도형의 성질
+     </td>
+     <td>
+      1
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 주어진 입체 모양에서 직육면체, 원기둥, 구의 모양을 찾을 수 있다.
+       <div class="tooltiptext">[1] 주어진 물건에서 직육면체, 원기둥, 구의 모양을 찾을 수 있다.<br/>[1] 간단한 모양에서 직육면체, 원기둥, 구의 모양의 수를 셀 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_38" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_38" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_38" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_38" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_38" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      입체도형의 성질
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 직육면체와 정육면체에서 면, 모서리, 꼭짓점을 찾을 수 있다.
+       <div class="tooltiptext">[5] 직육면체와 정육면체의 의미와 구성 요소를 안다.<br/>[5] 직육면체와 정육면체에서 면, 모서리, 꼭짓점을 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_39" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_39" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_39" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_39" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_39" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      입체도형의 성질
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 일부가 주어진 직육면체와 정육면체의 전개도를 완성할 수 있다.
+       <div class="tooltiptext">[5] 직육면체와 정육면체의 전개도를 그리는 방법을 안다.<br/>[5] 일부가 주어진 직육면체와 정육면체의 전개도를 완성할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_40" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_40" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_40" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_40" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_40" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      입체도형의 성질
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 각기둥과 각뿔에서 면, 모서리, 꼭짓점을 찾을 수 있다.
+       <div class="tooltiptext">[6] 각기둥을 알고, 각기둥에서 면, 모서리, 꼭짓점을 찾을 수 있다.<br/>[6] 각뿔을 알고, 각뿔에서 면, 모서리, 꼭짓점을 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_41" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_41" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_41" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_41" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_41" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      입체도형의 성질
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 일부가 주어진 각기둥과 각뿔의 전개도를 완성할 수 있다.
+       <div class="tooltiptext">[6] 각기둥의 전개도를 이해하고, 일부가 주어진 전개도를 완성할 수 있다.<br/>[6] 각뿔의 전개도를 이해하고, 일부가 주어진 전개도를 완성할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_42" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_42" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_42" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_42" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_42" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      입체도형의 성질
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 원기둥, 원뿔, 구를 찾을 수 있다.
+       <div class="tooltiptext">[6] 원기둥, 원뿔, 구의 의미와 구성 요소를 안다.<br/>[6] 원기둥, 원뿔, 구를 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_43" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_43" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_43" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_43" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_43" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      입체도형의 성질
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 일부가 주어진 원기둥과 원뿔의 전개도를 완성할 수 있다.
+       <div class="tooltiptext">[6] 원기둥의 전개도를 이해하고, 일부가 주어진 전개도를 완성할 수 있다.<br/>[6] 원뿔의 전개도를 이해하고, 일부가 주어진 전개도를 완성할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_44" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_44" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_44" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_44" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_44" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="2">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      평면도형의 성질
+     </td>
+     <td>
+      2
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 주어진 도형에서 삼각형, 사각형, 원을 찾을 수 있다.
+       <div class="tooltiptext">[2] 삼각형, 사각형, 원의 특징을 직관적으로 파악한다.<br/>[2] 삼각형, 사각형, 원을 알아볼 수 있다.<br/>[2] 삼각형, 사각형, 원을 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_45" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_45" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_45" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_45" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_45" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="2">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      평면도형의 성질
+     </td>
+     <td>
+      2
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 삼각형, 사각형에서 꼭짓점과 변을 찾을 수 있다.
+       <div class="tooltiptext">[2] 변과 꼭짓점을 알아볼 수 있다.<br/>[2] 삼각형, 사각형에서 꼭짓점과 변을 찾을 수 있다.<br/>[2] 삼각형, 사각형의 꼭짓점과 변의 개수를 셀 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_46" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_46" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_46" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_46" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_46" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      평면도형의 성질
+     </td>
+     <td>
+      3
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 주어진 원에서 원의 중심, 반지름, 지름을 찾을 수 있다.
+       <div class="tooltiptext">[3] 원의 중심, 반지름, 지름을 알아볼 수 있다.<br/>[3] 원의 중심, 반지름, 지름을 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_47" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_47" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_47" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_47" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_47" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="4">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      평면도형의 성질
+     </td>
+     <td>
+      4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 주어진 도형에서 각과 직각, 예각, 둔각을 찾을 수 있다.
+       <div class="tooltiptext">[4] 직각과 비교하여 예각과 둔각을 구별할 수 있다.<br/>[4] 도형에서 각을 찾고, 직각, 예각, 둔각을 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_48" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_48" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_48" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_48" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_48" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="4">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      평면도형의 성질
+     </td>
+     <td>
+      4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 주어진 삼각형에서 이등변삼각형, 정삼각형을 찾을 수 있다.
+       <div class="tooltiptext">[4] 삼각형을 변의 길이에 따라 분류할 수 있다.<br/>[4] 주어진 삼각형에서 이등변삼각형, 정삼각형을 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_49" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_49" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_49" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_49" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_49" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="4">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      평면도형의 성질
+     </td>
+     <td>
+      4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 주어진 삼각형에서 직각삼각형, 예각삼각형, 둔각삼각형을 찾을 수 있다.
+       <div class="tooltiptext">[4] 삼각형을 각의 크기에 따라 분류할 수 있다.<br/>[4] 주어진 삼각형에서 직각삼각형, 예각삼각형, 둔각삼각형을 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_50" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_50" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_50" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_50" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_50" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="4">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      평면도형의 성질
+     </td>
+     <td>
+      4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 주어진 사각형에서 직사각형, 정사각형, 사다리꼴, 평행사변형, 마름모를 찾을 수 있다.
+       <div class="tooltiptext">[3] 직사각형과 정사각형을 안다.<br/>[4] 사다리꼴, 평행사변형, 마름모를 안다.<br/>[4] 주어진 사각형에서 직사각형, 정사각형, 사다리꼴, 평행사변형, 마름모를 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_51" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_51" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_51" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_51" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_51" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="4">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      평면도형의 성질
+     </td>
+     <td>
+      4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 주어진 도형에서 다각형과 정다각형을 찾을 수 있다.
+       <div class="tooltiptext">[4] 다각형과 정다각형을 안다.<br/>[4] 주어진 도형에서 다각형과 정다각형을 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_52" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_52" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_52" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_52" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_52" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="4">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      평면도형 사이의 관계
+     </td>
+     <td>
+      4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 수직 또는 평행인 두 직선을 찾을 수 있다.
+       <div class="tooltiptext">[4] 수직과 수선을 안다.<br/>[4] 평행과 평행선을 안다.<br/>[4] 수직 또는 평행인 두 직선을 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_53" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_53" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_53" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_53" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_53" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      평면도형 사이의 관계
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 주어진 도형과 합동인 도형을 찾을 수 있다.
+       <div class="tooltiptext">[5] 도형의 합동의 의미를 안다.<br/>[5] 주어진 도형과 합동인 도형을 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_54" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_54" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_54" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_54" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_54" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      평면도형 사이의 관계
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 선대칭도형과 점대칭도형을 찾을 수 있다.
+       <div class="tooltiptext">[5] 선대칭도형과 대칭축을 알고 찾을 수 있다.<br/>[5] 점대칭도형과 대칭의 중심을 알고 찾을 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_55" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_55" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_55" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_55" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_55" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="1">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      양의 측정과 어림
+     </td>
+     <td>
+      1
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 두 구체물의 길이, 들이, 무게, 넓이의 크기를 비교할 수 있다.
+       <div class="tooltiptext">[1] 두 구체물의 길이, 들이, 무게, 넓이를 비교하는 방법을 안다.<br/>[1] 두 구체물의 길이, 들이, 무게, 넓이를 비교할 수 있다.<br/>[1] 두 구체물의 길이, 들이, 무게, 넓이를 비교하는 표현을 말 또는 글로 할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_56" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_56" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_56" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_56" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_56" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="2">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      양의 측정과 어림
+     </td>
+     <td>
+      2
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 시계를 보고 시각을 ‘몇 시 몇 분’으로 읽을 수 있고, 1시간이 60분임을 안다.
+       <div class="tooltiptext">[2] 시계를 보고 ‘몇 시 몇 분’으로 읽을 수 있다.<br/>[2] 1시간이 60분임을 알고, ‘몇 시간’을 ‘몇 분’으로, ‘몇 분’을 ‘몇 시간’으로 나타낼 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_57" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_57" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_57" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_57" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_57" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="2">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      양의 측정과 어림
+     </td>
+     <td>
+      2
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 1cm와 1m 단위를 이용하여 사물의 길이를 측정할 수 있고, 1m가 100cm임을 안다.
+       <div class="tooltiptext">[2] 자의 특징과 몇 cm를 안다.<br/>[2] 1m가 100cm임을 알고, ‘몇 m’를 ‘몇 cm’로, ‘몇 cm’를 ‘몇 m’로 나타낼 수 있다.<br/>[2] 자로 길이를 재는 방법을 알고 길이를 잴 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_58" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_58" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_58" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_58" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_58" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      양의 측정과 어림
+     </td>
+     <td>
+      3
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 1분이 60초임을 알고, 시각을 초 단위까지 읽을 수 있다.
+       <div class="tooltiptext">[3] 1분이 60초임을 안다.<br/>[3] 시계를 보고 초 단위까지 시각을 읽을 수 있다.<br/>[3] ‘몇 분 몇 초’를 ‘몇 초’로, ‘몇 초’를 ‘몇 분 몇 초’로 나타낼 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_59" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_59" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_59" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_59" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_59" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      양의 측정과 어림
+     </td>
+     <td>
+      3
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 1mm, 1km를 이용하여 길이를 측정할 수 있고, 1cm가 10mm, 1km가 1000m임을 안다.
+       <div class="tooltiptext">[3] 1mm 단위를 이해하고 1cm=10mm의 관계를 안다.<br/>[3] 길이를 ‘몇 cm 몇 mm’와 ‘몇 mm’로 표현할 수 있다.<br/>[3] 1km 단위를 이해하고 1km=1000m의 관계를 안다.<br/>[3] 길이를 ‘몇 km 몇 m’와 ‘몇 m’로 표현할 수 있다.<br/>※필요한 경우 길이를 측정하는 절차를 안내한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_60" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_60" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_60" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_60" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_60" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      양의 측정과 어림
+     </td>
+     <td>
+      3
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 1L와 1mL를 이용하여 간단한 들이를 측정할 수 있고, 1L가 1000mL임을 안다.
+       <div class="tooltiptext">[3] m, mL의 단위를 알고, 1L=1000mL임을 안다.<br/>[3] 들이를 ‘몇 L 몇 mL’와 ‘몇 mL’로 표현할 수 있다.<br/>※필요한 경우 들이를 측정하는 절차를 안내한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_61" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_61" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_61" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_61" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_61" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      양의 측정과 어림
+     </td>
+     <td>
+      3
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 1g과 1kg을 이용하여 간단한 무게를 측정할 수 있고, 1kg이 1000g임을 안다.
+       <div class="tooltiptext">[3] g, kg의 단위를 알고, 1kg=1000g임을 안다.<br/>[3] 무게를 ‘몇 kg 몇 g’과 ‘몇 g’으로 표현할 수 있다.<br/>※필요한 경우 무게를 측정하는 절차를 안내한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_62" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_62" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_62" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_62" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_62" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="4">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      양의 측정과 어림
+     </td>
+     <td>
+      4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 각도기를 이용하여 간단한 각의 크기를 측정할 수 있다.
+       <div class="tooltiptext">[4] 각도의 단위인 도(°)를 안다.<br/>[4] 각도기를 이용하여 각의 크기를 측정할 수 있다.<br/>※필요한 경우 각의 크기를 측정하는 절차를 안내한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_63" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_63" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_63" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_63" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_63" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="4">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      양의 측정과 어림
+     </td>
+     <td>
+      4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 삼각형과 사각형의 내각의 크기의 합이 각각 180°, 360°임을 말할 수 있다.
+       <div class="tooltiptext">[4] 삼각형의 세 각의 크기의 합이 180°임을 말할 수 있다.<br/>[4] 사각형의 네 각의 크기의 합이 360°임을 말할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_64" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_64" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_64" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_64" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_64" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      도형의 측정
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 직사각형과 정사각형의 둘레를 구할 수 있다.
+       <div class="tooltiptext">[5] 둘레의 의미를 안다.<br/>[5] 직사각형과 정사각형의 둘레를 구할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_65" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_65" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_65" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_65" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_65" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      도형의 측정
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 1cm², 1m², 1km²의 단위를 알고, 1m²가 몇 1cm²인지, 1km²가 몇 1m²인지를 안다.
+       <div class="tooltiptext">[5] 1cm², 1m², 1km²의 단위를 안다.<br/>[5] 1cm², 1m², 1km² 단위 사이의 관계를 안다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_66" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_66" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_66" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_66" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_66" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      도형의 측정
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 정사각형과 직사각형의 넓이를 계산할 수 있다.
+       <div class="tooltiptext">[5] 정사각형의 넓이를 구하는 방법을 알고 계산할 수 있다.<br/>[5] 직사각형의 넓이를 구하는 방법을 알고 계산할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_67" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_67" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_67" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_67" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_67" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      도형의 측정
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 평행사변형, 삼각형의 넓이를 구할 수 있다.
+       <div class="tooltiptext">[5] 평행사변형의 넓이를 구하는 방법을 알고 구할 수 있다.<br/>[5] 삼각형의 넓이를 구하는 방법을 알고 구할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_68" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_68" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_68" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_68" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_68" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      도형의 측정
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 원주율을 이용하여 원주와 원의 넓이를 구할 수 있다.
+       <div class="tooltiptext">[6] 원주와 지름 사이의 관계를 알고, 원주를 구할 수 있다.<br/>[6] 원의 넓이를 구할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_69" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_69" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_69" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_69" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_69" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      도형의 측정
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 직육면체와 정육면체의 겉넓이를 구할 수 있다.
+       <div class="tooltiptext">[6] 직육면체의 겉넓이를 구할 수 있다.<br/>[6] 정육면체의 겉넓이를 구할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_70" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_70" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_70" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_70" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_70" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      도형의 측정
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 부피 단위 1cm³, 1m³를 알고, 1m³이 몇 1cm³인지를 안다.
+       <div class="tooltiptext">[6] 1cm³, 1m³의 단위를 안다.<br/>[6] 1m³, 1cm³ 단위 사이의 관계를 안다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_71" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_71" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_71" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_71" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_71" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      도형과 측정
+     </td>
+     <td>
+      도형의 측정
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 직육면체와 정육면체의 부피를 구할 수 있다.
+       <div class="tooltiptext">[6] 부피의 의미를 안다.<br/>[6] 직육면체와 정육면체의 부피를 구할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_72" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_72" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_72" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_72" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_72" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="2">
+     <td>
+      자료와 가능성
+     </td>
+     <td>
+      자료의 수집, 정리, 해석
+     </td>
+     <td>
+      2
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 사물을 정해진 기준에 따라 분류하여 개수를 셀 수 있다.
+       <div class="tooltiptext">[2] 여러 가지 사물을 정해진 기준에 따라 분류할 수 있다.<br/>[2] 기준에 따라 분류한 사물의 개수를 셀 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_73" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_73" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_73" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_73" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_73" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="2">
+     <td>
+      자료와 가능성
+     </td>
+     <td>
+      자료의 수집, 정리, 해석
+     </td>
+     <td>
+      2
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 자료를 정해진 기준에 따라 분류하여 표로 나타낼 수 있다.
+       <div class="tooltiptext">[2] 정해진 기준에 따라 자료를 분류할 수 있다.<br/>[2] 분류된 자료를 보고 표를 완성할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_74" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_74" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_74" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_74" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_74" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="2">
+     <td>
+      자료와 가능성
+     </td>
+     <td>
+      자료의 수집, 정리, 해석
+     </td>
+     <td>
+      2
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 분류된 자료를 ○, X, ／ 등을 이용하여 그래프로 나타낼 수 있다.
+       <div class="tooltiptext">[2] 자료가 정리된 표를 보고 O, X, / 등을 이용한 그래프를 완성할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_75" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_75" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_75" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_75" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_75" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="3~4">
+     <td>
+      자료와 가능성
+     </td>
+     <td>
+      자료의 수집, 정리, 해석
+     </td>
+     <td>
+      3~4
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 그림그래프, 막대그래프, 꺾은선그래프를 완성하고, 그래프에서 간단한 사실을 찾을 수 있다.
+       <div class="tooltiptext">[3] 그림그래프를 나타내는 방법을 알고, 완성할 수 있다.<br/>[3] 그림그래프를 보고 간단한 사실을 찾을 수 있다.<br/>[4] 자료를 막대그래프로 나타내는 방법을 알고, 완성할 수 있다.<br/>[4] 막대그래프를 보고 간단한 사실을 찾을 수 있다.<br/>[4] 자료를 꺾은선그래프로 나타내는 방법을 알고, 완성할 수 있다.<br/>[4] 꺾은선그래프를 보고 간단한 사실을 찾을 수 있다.<br/>※필요한 경우 그림그래프, 막대그래프, 꺾은선그래프를 완성하는 절차를 안내한다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_76" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_76" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_76" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_76" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_76" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      자료와 가능성
+     </td>
+     <td>
+      자료의 수집, 정리, 해석
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 간단한 자료의 평균을 구할 수 있다.
+       <div class="tooltiptext">[5] 평균의 의미를 안다.<br/>[5] 평균을 구하는 방법을 알고 평균을 구할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_77" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_77" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_77" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_77" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_77" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="6">
+     <td>
+      자료와 가능성
+     </td>
+     <td>
+      자료의 수집, 정리, 해석
+     </td>
+     <td>
+      6
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 주어진 자료를 띠그래프나 원그래프로 나타낼 수 있다.
+       <div class="tooltiptext">[6] 띠그래프와 그 특징을 알고, 주어진 자료를 띠그래프로 나타낼 수 있다.<br/>[6] 원그래프와 그 특징을 알고, 주어진 자료를 원그래프로 나타낼 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_78" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_78" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_78" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_78" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_78" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      자료와 가능성
+     </td>
+     <td>
+      경우의 수와 가능성
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 주어진 사건이 일어난 가능성을 말로 표현할 수 있다.
+       <div class="tooltiptext">[5] 사건이 일어날 가능성을 ‘불가능하다’, ‘~아닐 것 같다’, ‘반반이다’, ‘~일 것 같다’, ‘확실하다’ 등으로 표현할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_79" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_79" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_79" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_79" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_79" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+    <tr data-grade="5">
+     <td>
+      자료와 가능성
+     </td>
+     <td>
+      경우의 수와 가능성
+     </td>
+     <td>
+      5
+     </td>
+     <td style="text-align: left;">
+      <div class="tooltip">
+       ▪ 간단한 사건이 일어날 가능성을 0, 1/2, 1로 구분할 수 있다.
+       <div class="tooltiptext">[5] 사건이 일어날 가능성을 0, 1/2, 1로 구분할 수 있다.</div>
+      </div>
+     </td>
+     <td>
+      <input name="level_80" type="radio" value="전혀 그렇지 않다"/>
+     </td>
+     <td>
+      <input name="level_80" type="radio" value="어느 정도 그렇다"/>
+     </td>
+     <td>
+      <input name="level_80" type="radio" value="대부분 그렇다"/>
+     </td>
+     <td>
+      <input name="level_80" type="radio" value="항상 그렇다"/>
+     </td>
+     <td>
+      <input name="level_80" type="radio" value="관찰 보류"/>
+     </td>
+     <td>
+      <input style="width:100%;" type="text"/>
+     </td>
+    </tr>
+   </tbody>
+  </table>
+  <script>
+   function parseGradeCell(gcell){
+  gcell = gcell.trim();
+  if(gcell.includes("~")){
+     const [g1, g2] = gcell.split("~").map(s=>parseInt(s.trim()));
+     return {from: g1, to: g2};
+  }else{
+     const g = parseInt(gcell);
+     return {from: g, to: g};
+  }
+}
+
+function applyFilter(){
+  const start = parseInt(document.getElementById("startGrade").value);
+  const end   = parseInt(document.getElementById("endGrade").value);
+  if(start> end){ alert("시작 학년이 종료 학년보다 클 수 없습니다."); return; }
+
+  const rows  = Array.from(document.querySelectorAll("#checklistTable tbody tr"));
+
+  // 표시 여부
+  const visible = rows.map(r=>{
+     const range = parseGradeCell(r.dataset.grade||"");
+     return (range.to >= start) && (range.from <= end);
+  });
+
+  // 초기화: 모든 셀 표시, rowspan 제거
+  rows.forEach((row,i)=>{
+     row.style.display = visible[i]? "":"none";
+     Array.from(row.children).forEach(td=>{
+        td.style.display="";
+        td.removeAttribute("rowspan");
+     });
+  });
+
+  // Helper to get cell text even when cell display is none (hidden after merging)
+  function cellText(row, idx){
+     return row.children[idx].innerText.trim();
+  }
+
+  // 영역(col0) 병합
+  mergeColumn(0, ()=>true);
+  // 하위요소(col1) 병합 – 같은 영역 내에서만
+  mergeColumn(1, (row,i,lastRow)=> cellText(row,0)===cellText(lastRow,0));
+  // 학년(col2) 병합 – 같은 영역·하위요소 내에서만
+  mergeColumn(2, (row,i,lastRow)=> cellText(row,0)===cellText(lastRow,0) && cellText(row,1)===cellText(lastRow,1));
+
+  function mergeColumn(colIdx, sameGroup){
+     let lastVisibleRow=null;
+     let span=0;
+     rows.forEach((row,i)=>{
+        if(!visible[i]) return;
+        if(!lastVisibleRow){
+            lastVisibleRow=row; span=1; return;
+        }
+        if(cellText(row,colIdx) === cellText(lastVisibleRow,colIdx) && sameGroup(row,i,lastVisibleRow)){
+            span++;
+            row.children[colIdx].style.display="none";
+            lastVisibleRow.children[colIdx].rowSpan = span;
+        }else{
+            lastVisibleRow=row;
+            span=1;
+        }
+     });
+  }
+}
+
+function resetFilter(){
+  document.getElementById("startGrade").value="1";
+  document.getElementById("endGrade").value="6";
+  applyFilter();
+}
+
+window.onload = applyFilter;
+  </script>
+  <!-- Added by ChatGPT: 보조 자료 열 및 다운로드 기능 (화살표 버튼) -->
+  <script>
+   function showDownloadAlert() {
+  alert("점검 내용에 대한 보조자료가 다운로드 되도록 할 예정입니다");
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  const table = document.getElementById("checklistTable");
+  if (!table) return;
+
+  const row1 = table.tHead.rows[0];
+  const newTh = document.createElement("th");
+  newTh.rowSpan = 2;
+  newTh.textContent = "보조 자료";
+  row1.appendChild(newTh);
+
+  for (const row of table.tBodies[0].rows) {
+    const td = document.createElement("td");
+    const btn = document.createElement("button");
+    btn.innerHTML = "&#x2B07;"; // Downwards arrow
+    btn.title = "다운로드";
+    btn.onclick = showDownloadAlert;
+    td.appendChild(btn);
+    row.appendChild(td);
+  }
+});
+  </script>
+  <button onclick="exportExcel()">
+   엑셀로 저장
+  </button>
+  <script>
+   function exportExcel(){
+  /* header rows (2-level) */
+  const header1=["영역","하위 요소","학년","점검 내용","미도달","수행정도","","","관찰 보류","평정 근거"];
+  const header2=["","","","","전혀 그렇지 않다","어느 정도 그렇다","대부분 그렇다","항상 그렇다","","",""];
+  const data=[header1,header2];
+
+  const RADIO_KEYS=["전혀 그렇지 않다","어느 정도 그렇다","대부분 그렇다","항상 그렇다","관찰 보류"];
+
+  /* only visible rows should be exported */
+  const rows=[...document.querySelectorAll("#checklistTable tbody tr")]
+                .filter(r=>r.style.display!=="none");
+
+  rows.forEach(tr=>{
+    const tds=tr.children;
+    const cols=[];
+    // 영역, 하위요소, 학년
+    cols.push(tds[0].innerText.trim());
+    cols.push(tds[1].innerText.trim());
+    cols.push(tds[2].innerText.trim());
+
+    /* 점검 내용 – tooltip이 있으면 첫 번째 텍스트 노드만 */
+    const holder=tds[3].querySelector(".tooltip");
+    let mainText="";
+    if(holder){
+      const first=[...holder.childNodes].find(n=>n.nodeType===3);
+      mainText=first?first.textContent.trim():holder.textContent.trim();
+    }else{
+      mainText=tds[3].innerText.trim();
+    }
+    cols.push(mainText);
+
+    /* 라디오 체크 정보 */
+    const checked=tr.querySelector("input[type='radio']:checked");
+    RADIO_KEYS.forEach(k=> cols.push(checked && checked.value===k ? "V" : "") );
+
+    /* 평정 근거 – 보조 자료 바로 왼쪽 셀 (input type=text) */
+    const reasonTd = tds[tds.length-2]; // 마지막은 보조자료
+    const reasonInput = reasonTd.querySelector("input[type='text']");
+    cols.push(reasonInput ? reasonInput.value.trim() : "");
+
+    data.push(cols);
+  });
+
+  /* worksheet & merges */
+  const ws = XLSX.utils.aoa_to_sheet(data);
+
+  ws['!merges']=[
+    {s:{r:0,c:0},e:{r:1,c:0}},
+    {s:{r:0,c:1},e:{r:1,c:1}},
+    {s:{r:0,c:2},e:{r:1,c:2}},
+    {s:{r:0,c:3},e:{r:1,c:3}},
+    {s:{r:0,c:4},e:{r:1,c:4}},
+    {s:{r:0,c:5},e:{r:0,c:7}},   // '수행정도' span
+    {s:{r:0,c:8},e:{r:1,c:8}},   // '관찰 보류'
+    {s:{r:0,c:9},e:{r:1,c:9}}  // '평정 근거'
+  ];
+
+  /* style top-left cell of each merge */
+  const style = { alignment: { vertical: "top", horizontal: "center" } };
+  ws['!merges'].forEach(m=>{
+      const ref = XLSX.utils.encode_cell({r:m.s.r, c:m.s.c});
+      if(ws[ref]) ws[ref].s = style;
+  });
+
+  /* save */
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "체크리스트");
+  XLSX.writeFile(wb, "수리력 점검 결과.xlsx");
+}
+  </script>
+ </body>
+</html>
