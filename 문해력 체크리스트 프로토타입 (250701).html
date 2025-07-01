@@ -1,0 +1,388 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js">
+</script>
+<meta charset="UTF-8">
+<title>문해력 점검 체크리스트</title>
+<style>
+.tooltip { position: relative; display: inline-block; cursor: help; }
+.tooltip .tooltiptext { visibility: hidden; width: 400px; background: #f9f9f9; color: #000; border: 1px solid #ccc; padding: 8px; border-radius: 4px; position: absolute; z-index: 1; top: 100%; left: 0; white-space: pre-line; }
+.tooltip:hover .tooltiptext { visibility: visible; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th, td { padding: 8px; border: 1px solid #ccc; text-align: center; }
+th { background: #f2f2f2; }
+.control-panel { margin: 10px 0; }
+</style>
+</head>
+<body>
+<h2>문해력 점검 체크리스트</h2>
+<div class="control-panel">
+학년군:
+<label><input type="checkbox" class="gradeFilter" value="1~2" checked> 1~2학년군</label>
+<label><input type="checkbox" class="gradeFilter" value="3~4" checked> 3~4학년군</label>
+<label><input type="checkbox" class="gradeFilter" value="5~6" checked> 5~6학년군</label>
+<button onclick="applyFilter()">적용</button>
+<button onclick="resetFilter()">초기화</button>
+</div>
+<table id="checklistTable">
+   <thead>
+    <tr>
+     <th colspan="1" rowspan="2">
+      영역
+     </th>
+     <th colspan="1" rowspan="2">
+      학년군
+     </th>
+     <th colspan="1" rowspan="2">
+      점검 내용
+     </th>
+     <th colspan="1" rowspan="1">
+      미도달
+     </th>
+     <th colspan="3" rowspan="1">
+      수행정도
+     </th>
+     <th colspan="1" rowspan="2">
+      관찰 보류
+     </th>
+     <th colspan="1" rowspan="2">
+      평정 근거
+     </th>
+     <th colspan="1" rowspan="2">
+      보조 자료
+     </th>
+    </tr>
+    <tr>
+     <th>
+      전혀 그렇지 않다
+     </th>
+     <th>
+      어느 정도 그렇다
+     </th>
+     <th>
+      대부분 그렇다
+     </th>
+     <th>
+      항상 그렇다
+     </th>
+    </tr>
+   </thead><tbody id="tableBody">
+</tbody>
+</table>
+<div style="margin-top:10px;">
+<button onclick="exportExcel()">엑셀로 저장</button>
+</div>
+<script>
+let previousStates = {};
+const data = [
+    {"영역":"듣기·말하기","학년군":"1~2","점검 내용":"▪  일이 일어난 순서를 고려하며 듣고 말한다.","세부 점검 요소":"이야기를 듣고 일이 일어난 순서를 기억하는가?<br\/>일어난 사건을 처음부터 끝까지 순서대로 말할 수 있는가?<br\/>잘못된 순서로 말했을 때 스스로 순서를 바로잡을 수 있는가?"},
+    {"영역":"듣기·말하기","학년군":"1~2","점검 내용":"▪  자신의 감정을 표현하며 대화를 나눈다.","세부 점검 요소":"감정을 표현할 때 적절한 감정 단어를 사용하는가?<br\/>감정을 표현할 때 말투나 표정이 감정과 일치하는가?"},
+    {"영역":"듣기·말하기","학년군":"1~2","점검 내용":"▪  상대의 말을 집중하여 듣는다.","세부 점검 요소":"상대방과 대화할 때 눈을 맞추며 경청하는가?<br\/>몸짓이나 얼굴 표정을 통해 관심을 보이는가?<br\/>편안하고 집중된 자세로 상대방을 바라보는가?"},
+    {"영역":"듣기·말하기","학년군":"1~2","점검 내용":"▪  자신의 생각을 바른 자세로 발표한다. ","세부 점검 요소":""},
+    {"영역":"듣기·말하기","학년군":"3~4","점검 내용":"▪  중요한 내용을 파악하며 듣는다.","세부 점검 요소":"교사의 설명을 듣고 중요한 내용을 파악하여 과제를 바르게 수행하는가?"},
+    {"영역":"듣기·말하기","학년군":"3~4","점검 내용":"▪  원인과 결과의 관계를 고려하며 듣고 말한다.","세부 점검 요소":"상대의 말을 듣고 사건의 원인과 결과를 파악하는가?<br\/>사건의 원인과 결과를 말할 수 있는가?"},
+    {"영역":"듣기·말하기","학년군":"3~4","점검 내용":"▪  상황과 상대의 입장을 이해하며 듣고 말한다. ","세부 점검 요소":"상대의 입장과 상황을 이해하는가?<br\/>상대의 말을 경청하는가?<br\/>상`대의 입장을 고려하여 말하는가?"},
+    {"영역":"듣기·말하기","학년군":"3~4","점검 내용":"▪  주제에 알맞은 자료를 찾아 발표한다.","세부 점검 요소":""},
+    {"영역":"듣기·말하기","학년군":"3~4","점검 내용":"▪  주제에 적절한 의견을 제시하며 토의에 참여한다.","세부 점검 요소":""},
+    {"영역":"듣기·말하기","학년군":"5~6","점검 내용":"▪  생략된 내용을 추론하며 듣는다.","세부 점검 요소":"말 속에 드러나지 않은 의미를 파악할 수 있는가?<br\/>이야기의 흐름을 바탕으로 생략된 정보를 추론할 수 있는가?"},
+    {"영역":"듣기·말하기","학년군":"5~6","점검 내용":"▪  자료를 선별하여 내용을 구성하고 매체를 활용하여 발표한다.","세부 점검 요소":""},
+    {"영역":"듣기·말하기","학년군":"5~6","점검 내용":"▪  서로의 의견을 비교하며 토의한다.","세부 점검 요소":"다른 사람의 의견을 잘 듣고, 경청하는 태도를 보이며, 끼어 들지 않고 끝까지 듣는가?"},
+    {"영역":"듣기·말하기","학년군":"5~6","점검 내용":"▪  타당한 이유와 근거를 제시하며 토론한다. ","세부 점검 요소":"주장을 뒷받침할 수 있는 구체적인 근거를 제시할 수 있는가?<br\/>상대방의 의견에 대해 반박할 때 타당한 이유를 제시할 수 있는가?"},
+    {"영역":"읽기","학년군":"1~2","점검 내용":"▪  글자, 단어를 정확하게 소리 내어 읽는다.","세부 점검 요소":"음운 변동이 없는 단어를 정확하게 읽는가? <br\/>음운 변동이 있는 단어를 정확하게 읽는가?"},
+    {"영역":"읽기","학년군":"1~2","점검 내용":"▪  의미가 잘 드러나도록 문장을 띄어 읽는다. ","세부 점검 요소":"띄어쓰기 표기에 따라 띄어 읽는가?<br\/>주어부와 서술어부를 자연스럽게 나누어 읽는가?<br\/>단어를 바꾸어 읽는가?<br\/>머뭇거림 없이 속도가 적당한가?"},
+    {"영역":"읽기","학년군":"1~2","점검 내용":"▪  짧은 글을 읽고 내용을 확인한다.","세부 점검 요소":""},
+    {"영역":"읽기","학년군":"1~2","점검 내용":"▪  인물의 마음이나 생각을 짐작하며 글을 읽는다.","세부 점검 요소":"인물의 감정을 이해하고 그 이유를 짐작할 수 있는가?<br\/>상황 변화에 따라 인물의 감정이나 생각의 변화를 짐작하는가?"},
+    {"영역":"읽기","학년군":"3~4","점검 내용":"▪  글의 의미를 파악하며 소리 내어 읽는다. ","세부 점검 요소":"글을 정확하게 소리 내어 읽을 수 있는가?<br\/>읽은 글의 내용을 파악하는가?"},
+    {"영역":"읽기","학년군":"3~4","점검 내용":"▪  문단에서 중심 생각을 파악한다.","세부 점검 요소":"문단을 읽고 중심 문장을 찾을 수 있는가?"},
+    {"영역":"읽기","학년군":"3~4","점검 내용":"▪  질문을 활용하여 글의 내용을 예측하며 읽는다.","세부 점검 요소":"제목이나 첫 문장을 보고 글의 내용을 예측할 수 있는가?<br\/>읽기 전이나 중간에 예상되는 세부 사항을 예측하는가?"},
+    {"영역":"읽기","학년군":"3~4","점검 내용":"▪  글에 나타난 사실과 의견을 구분한다.","세부 점검 요소":""},
+    {"영역":"읽기","학년군":"5~6","점검 내용":"▪  글의 구조를 고려하여 내용을 요약한다. ","세부 점검 요소":"요약에서 불필요한 표현을 줄이고 핵심 내용을 간결하게 표현할 수 있는가?<br\/>구조에 맞게 글을 나누고, 각 부분별로 중심 문장을 찾을 수 있는가"},
+    {"영역":"읽기","학년군":"5~6","점검 내용":"▪  글을 읽고 주장이나 주제를 파악한다.","세부 점검 요소":"글에서 다루고 있는 핵심 주제를 파악할 수 있는가? "},
+    {"영역":"읽기","학년군":"5~6","점검 내용":"▪  글에서 생략된 내용을 추론하며 읽는다.","세부 점검 요소":"글의 앞뒤 문장의 관계를 이해하고 생략된 내용을 추론할 수 있는가?<br\/>직접적으로 언급되지 않은 내용을 간접적인 정보에서 추론할 수 있는가?"},
+    {"영역":"읽기","학년군":"5~6","점검 내용":"▪  글을 읽고 내용의 타당성을 평가한다. ","세부 점검 요소":"주장이 타당한 근거를 바탕으로 하고 있는지 확인할 수 있는가?<br\/>주장과 근거 간의 논리적 연결이 일관되는지 파악할 수 있는가?<br\/>타당한 내용과 타당하지 않은 내용 중 타당한 내용을 선택할 수 있는가"},
+    {"영역":"쓰기","학년군":"1~2","점검 내용":"▪  글자와 단어를 바르게 쓴다.","세부 점검 요소":"자음과 모음의 위치를 정확하게 쓰는가?<br\/>받침이 있는 글자를 정확하게 쓰는가?"},
+    {"영역":"쓰기","학년군":"1~2","점검 내용":"▪  자신의 생각이나 느낌을 문장으로 표현한다.","세부 점검 요소":"자신의 감정이나 생각을 표현하는 데 적절한 어휘를 선택했는가?<br\/>문장 내 생각의 흐름이 자연스럽고 일관되게 표현되었는가?"},
+    {"영역":"쓰기","학년군":"1~2","점검 내용":"▪  주변 소재에 대해 소개하는 글을 쓴다.","세부 점검 요소":"소개 대상이 누구(무엇)인지 분명하게 나타나 있는가?"},
+    {"영역":"쓰기","학년군":"1~2","점검 내용":"▪  겪은 일을 표현하는 글을 자유롭게 쓴다.","세부 점검 요소":"일이 일어난 순서대로 자연스럽게 전개되었는가?<br\/>누구와 어디서 있었던 일인지 명확하게 표현되었는가?"},
+    {"영역":"쓰기","학년군":"3~4","점검 내용":"▪  중심 문장을 갖추어 문단을 쓴다. ","세부 점검 요소":"문단에서 가장 중요한 생각이나 내용이 분명히 드러나는가?"},
+    {"영역":"쓰기","학년군":"3~4","점검 내용":"▪  절차와 결과를 포함하여 보고하는 글을 쓴다. ","세부 점검 요소":"무엇에 대해 보고하는지 잘 드러내고 있는가?<br\/>관찰 결과나 조사 결과가 명확하게 드러나는가?"},
+    {"영역":"쓰기","학년군":"3~4","점검 내용":"▪  대상에 대한 자신의 의견이 드러나게 글을 쓴다.","세부 점검 요소":"대상에 대한 자신의 생각이나 느낌이 확실히 표현되었는가?<br\/>자신의 주장을 뒷받침하는 근거나 예시가 적절한가?"},
+    {"영역":"쓰기","학년군":"3~4","점검 내용":"▪  목적을 고려하여 마음을 전하는 글을 쓴다.","세부 점검 요소":"감사, 축하, 사과 등 글의 의도가 분명하게 드러나는가?<br\/>자신의 느낌이나 생각이 구체적으로 담겨 있는가?"},
+    {"영역":"쓰기","학년군":"5~6","점검 내용":"▪  대상의 특성이 나타나게 설명하는 글을 쓴다.","세부 점검 요소":"어떤 대상을 설명하는지 명확하게 드러나는가?<br\/>대상을 대표하는 특징이 구체적으로 잘 드러났는가?"},
+    {"영역":"쓰기","학년군":"5~6","점검 내용":"▪  적절한 근거를 사용하여 주장하는 글을 쓴다.","세부 점검 요소":"글의 주제나 입장이 분명하게 제시되었는가?<br\/>독자를 설득하기 위한 문장 표현이 사용되었는가?"},
+    {"영역":"쓰기","학년군":"5~6","점검 내용":"▪  체험한 일에 대한 감상을 나타내는 글을 쓴다.","세부 점검 요소":"실제 경험을 구체적이고 사실적으로 설명했는가?<br\/>체험과 감상이 서로 자연스럽게 연결되었는가?<br\/>자신의 생각이나 느낌을 적절히 표현했는가?"},
+    {"영역":"쓰기","학년군":"5~6","점검 내용":"▪  독자를 고려하여 내용을 생성하고 글을 쓴다. ","세부 점검 요소":"왜, 누구에게 쓰는 글인지 명확한가?<br\/>글의 어휘, 문장이 독자에게 적절한가?<br\/>글의 전개가 독자의 관심을 끌 수 있는가?"},
+    {"영역":"문법","학년군":"1~2","점검 내용":"▪  한글 자모의 이름과 소릿값을 안다.","세부 점검 요소":"자음자와 모음자를 결합하여 올바르게 음절을 만들 수 있는가?<br\/>자모의 이름과 발음을 구별하여 정확히 말할 수 있는가?"},
+    {"영역":"문법","학년군":"1~2","점검 내용":"▪  소리와 표기가 다를 수 있음을 알고 단어를 바르게 읽고 쓴다.","세부 점검 요소":"발음과 표기가 다른 단어에서 그 차이를 이해하고 있는가?<br\/>단어를 읽을 때 발음과 표기 간의 차이를 인식하고 정확히 발음할 수 있는가?"},
+    {"영역":"문법","학년군":"1~2","점검 내용":"▪  문장 부호를 알맞게 사용한다.","세부 점검 요소":"문장의 끝에 마침표를 적절히 사용하여 완결된 문장을 만들고 있는가?"},
+    {"영역":"문법","학년군":"3~4","점검 내용":"▪  단어와 단어 간 유의 관계, 반의 관계를 파악한다.","세부 점검 요소":"주어진 단어에 대해 유의어와 반의어 관계를 설명할 수 있는가?<br\/>유의어와 반의어를 구별하고 이를 설명할 수 있는 능력이 있는가?"},
+    {"영역":"문법","학년군":"3~4","점검 내용":"▪  국어사전에서 단어를 찾는다.","세부 점검 요소":"사전 사용법을 이해하고 있는가?"},
+    {"영역":"문법","학년군":"3~4","점검 내용":"▪  글과 담화에 쓰인 높임 표현과 지시ㆍ접속 표현을 이해한다.","세부 점검 요소":"높임 표현이 사용되는 이유와 효과를 이해하고 설명할 수 있는가?<br\/>존댓말과 반말을 구분하여 상황에 맞게 사용할 수 있는가?"},
+    {"영역":"문법","학년군":"5~6","점검 내용":"▪  관용 표현의 의미를 이해한다. ","세부 점검 요소":"상황에 맞는 관용 표현을 문맥에 맞게 정확하게 사용할 수 있는가?<br\/>관용 표현을 다양한 상황에서 자유롭게 사용할 수 있는가? "},
+    {"영역":"문법","학년군":"5~6","점검 내용":"▪  호응 관계가 올바른 문장을 구성한다.","세부 점검 요소":"문장 내 호응 관계가 일관되게 유지되었는가?"},
+    {"영역":"문법","학년군":"5~6","점검 내용":"▪  글과 담화에 쓰인 시간 표현을 이해한다.","세부 점검 요소":"시간의 순서를 따라 사건이 전개되는지를 이해하는가?<br\/>사건들의 시간적 흐름과 상호 관계를 정확히 이해하는가?"},
+    {"영역":"문학","학년군":"1~2","점검 내용":"▪  즐거움을 느끼며 말놀이와 낭송을 한다.","세부 점검 요소":"표정과 몸짓으로 감정을 잘 전달하고 즐거움을 표현하는가?"},
+    {"영역":"문학","학년군":"1~2","점검 내용":"▪  작품에 대한 생각이나 느낌을 말한다. ","세부 점검 요소":"작품의 주제나 의도를 이해하고 자신의 생각을 연결하여 표현하는가?<br\/>작품을 보고 느낀 감정이나 생각을 자유롭게 말하는가?"},
+    {"영역":"문학","학년군":"1~2","점검 내용":"▪  작품 속 인물의 모습, 행동, 마음을 상상한다.","세부 점검 요소":""},
+    {"영역":"문학","학년군":"3~4","점검 내용":"▪  이야기의 흐름을 중심으로 작품을 감상한다. ","세부 점검 요소":"작품을 읽고 이야기의 순서를 파악할 수 있는가?"},
+    {"영역":"문학","학년군":"3~4","점검 내용":"▪  작품 속 세계를 자기 경험과 비교하며 작품을 감상한다.","세부 점검 요소":"작품 속 인물과 자신의 경험을 비교해서 말할 수 있는가?"},
+    {"영역":"문학","학년군":"3~4","점검 내용":"▪  감각적 표현에 유의하여 작품을 감상한다.","세부 점검 요소":"시를 읽고 감각적 표현을 찾을 수 있는가?<br\/>시에서 감각적 표현이 무엇인지 알고 있는가?"},
+    {"영역":"문학","학년군":"5~6","점검 내용":"▪  비유적 표현에 유의하여 작품을 감상한다. ","세부 점검 요소":"비유적 표현의 대상을 찾을 수 있는가?<br\/>작품 속에서 비유적 표현을 찾을 수 있는가?"},
+    {"영역":"문학","학년군":"5~6","점검 내용":"▪  작품을 읽고 인물, 사건, 배경을 파악한다. ","세부 점검 요소":"작품 속에서 나타나는 인물, 사건, 배경을 찾을 수 있는가?<br\/>작품의 줄거리를 말할 수 있는가?"},
+    {"영역":"문학","학년군":"5~6","점검 내용":"▪  작품을 읽고 인상적인 부분에 대해 의견을 나눈다. ","세부 점검 요소":"작품을 읽고 인상적인 부분과 그 까닭을 말할 수 있는가?"},
+    {"영역":"문학","학년군":"5~6","점검 내용":"▪  자신의 경험을 시, 소설, 극, 수필 등 적절한 갈래로 표현한다.","세부 점검 요소":"각 갈래만이 가진 특성은 무엇인가?<br\/>그 특성이 드러난 부분을 설명할 수 있는가?"},
+    {"영역":"매체","학년군":"1~2","점검 내용":"▪  인터넷에서 학습에 필요한 자료를 탐색한다.","세부 점검 요소":"인터넷 검색 사이트를 알고 있는가?<br\/>검색 사이트에서 필요한 자료를 찾을 수 있는가?"},
+    {"영역":"매체","학년군":"1~2","점검 내용":"▪  매체 소통 윤리를 이해한다. ","세부 점검 요소":"인터넷에서 지켜야 할 사항을 알고 있는가?"},
+    {"영역":"매체","학년군":"3~4","점검 내용":"▪  인터넷에서 학습에 필요한 자료를 탐색한다.","세부 점검 요소":""},
+    {"영역":"매체","학년군":"3~4","점검 내용":"▪  매체 소통 윤리를 이해한다.","세부 점검 요소":"매체를 활용하여 소통할 때 지켜야 할 예절을 알고 있는가?<br\/>저작권의 뜻과 저작권을 보호하는 방법을 알고 있는가?<br\/>저작권을 보호해야 하는 까닭을 이야기할 수 있는가?<br\/>출처를 밝히는 방법에 대해 이야기할 수 있는가?"},
+    {"영역":"매체","학년군":"5~6","점검 내용":"▪  뉴스 및 각종 정보 매체 자료의 신뢰성을 평가한다. ","세부 점검 요소":"제시된 뉴스의 신뢰성 판단의 근거를 말할 수 있는가?"},
+    {"영역":"매체","학년군":"5~6","점검 내용":"▪  적합한 양식을 고려하여 복합양식 매체 자료를 제작한다. ","세부 점검 요소":"자신의 글을 효과적으로 나타내기 위하여 정보기기를 적절히 사용하였는가?"}];
+
+function generateTable() {
+    const tbody = document.getElementById('tableBody');
+    const checkedGrades = Array.from(document.querySelectorAll('.gradeFilter:checked')).map(cb => cb.value);
+
+    // Save previous states using key -> {selectedValue, reason}
+    
+    document.querySelectorAll("#tableBody tr").forEach(row => {
+        const tds = row.querySelectorAll("td");
+        if (tds.length < 3) return;
+        const key = tds[0].innerText.trim() + "|" + tds[1].innerText.trim() + "|" + tds[2].innerText.trim();
+        let selectedValue = "";
+        row.querySelectorAll("input[type='radio']").forEach(input => {
+            if (input.checked) selectedValue = input.value;
+        });
+        const reasonInput = row.querySelector("input[type='text']");
+        const reason = reasonInput ? reasonInput.value.trim() : "";
+        previousStates[key] = { selectedValue, reason };
+    });
+
+    tbody.innerHTML = "";
+    const filtered = data.filter(item => checkedGrades.includes(item['학년군']));
+    filtered.forEach((item, idx) => {
+        const tr = document.createElement('tr');
+        const key = item['영역'] + "|" + item['학년군'] + "|" + item['점검 내용'];
+        tr.innerHTML = `
+<td>${item['영역']}</td>
+<td>${item['학년군']}</td>
+<td style="text-align:left;">${item['점검 내용']}</td>
+<td><input type="radio" value="전혀 그렇지 않다"></td>
+<td><input type="radio" value="어느 정도 그렇다"></td>
+<td><input type="radio" value="대부분 그렇다"></td>
+<td><input type="radio" value="항상 그렇다"></td>
+<td><input type="radio" value="관찰 보류"></td>
+<td><input type="text" style="width:95%;"></td>
+<td><button onclick="downloadResource()">&#x2B07;</button></td>
+`;
+        tbody.appendChild(tr);
+
+    });
+    const rows = Array.from(document.querySelectorAll('#checklistTable tbody tr'));
+    const visible = rows.map(row => row.style.display !== 'none');
+
+    // Helper to get cell text
+    function cellText(row, idx) {
+        return row.children[idx].innerText.trim();
+    }
+
+    // mergeColumn 함수 정의
+    function mergeColumn(colIdx, sameGroup) {
+        let lastVisibleRow = null;
+        let span = 1;
+
+        rows.forEach((row, i) => {
+            const currentCell = row.children[colIdx];
+            currentCell.rowSpan = 1;
+            currentCell.style.display = "";
+
+            if (!lastVisibleRow) {
+                lastVisibleRow = row;
+                span = 1;
+                return;
+            }
+
+            if (cellText(row, colIdx) === cellText(lastVisibleRow, colIdx) && sameGroup(row, i, lastVisibleRow)) {
+                span++;
+                currentCell.style.display = "none";
+                lastVisibleRow.children[colIdx].rowSpan = span;
+            } else {
+                lastVisibleRow = row;
+                span = 1;
+            }
+        });
+    }
+
+    // 병합 적용
+    mergeColumn(0, () => true); // 영역 병합
+    mergeColumn(1, (row, i, lastRow) => cellText(row, 0) === cellText(lastRow, 0)); // 학년군 병합
+}
+
+function resetFilter() {
+    location.reload(); // 페이지를 새로고침하여 병합된 셀 구조 유지 및 입력값 완전 초기화
+}
+
+document.addEventListener('DOMContentLoaded', generateTable);
+
+function downloadResource() {
+    alert('점검 내용에 대한 보조자료가 다운로드 되도록 할 예정입니다.');
+}
+
+
+function exportExcel() {
+    const wb = XLSX.utils.book_new();
+    const ws_data = [["영역","학년군","점검 내용","전혀 그렇지 않다","어느 정도 그렇다","대부분 그렇다","항상 그렇다","관찰 보류","평정 근거"]];
+
+    const rows = document.querySelectorAll("#tableBody tr");
+    let currentArea = "";
+    let currentGrade = "";
+
+    rows.forEach(row => {
+        if (row.style.display === "none") return;
+
+        const tds = row.querySelectorAll("td");
+        if (tds.length < 10) return;
+
+        const areaText = tds[0].innerText.trim();
+        if (areaText !== "") currentArea = areaText;
+
+        const gradeText = tds[1].innerText.trim();
+        if (gradeText !== "") currentGrade = gradeText;
+
+        const content = tds[2].innerText.trim();
+
+        const levelIndicators = [];
+        for (let i = 3; i <= 6; i++) {
+            const input = tds[i].querySelector("input[type='radio']");
+            levelIndicators.push(input && input.checked ? "V" : "");
+        }
+
+        const observeInput = tds[7].querySelector("input[type='radio']");
+        const observeChecked = observeInput && observeInput.checked ? "V" : "";
+
+        const reasonInput = tds[8].querySelector("input[type='text']");
+        const reason = reasonInput ? reasonInput.value.trim() : "";
+
+        ws_data.push([
+            currentArea,
+            currentGrade,
+            content,
+            ...levelIndicators,
+            observeChecked,
+            reason
+        ]);
+    });
+
+    const ws = XLSX.utils.aoa_to_sheet(ws_data);
+    XLSX.utils.book_append_sheet(wb, ws, "문해력 체크리스트");
+    XLSX.writeFile(wb, "문해력_점검_체크리스트.xlsx");
+}
+
+</script>
+
+
+<script>
+// Enhancement for preserving radio/text inputs when applying filter
+
+function saveCurrentState() {
+    const states = {};
+    document.querySelectorAll('#checklistTable tbody tr').forEach((row, index) => {
+        const radios = row.querySelectorAll('input[type="radio"]');
+        radios.forEach(radio => {
+            if (radio.checked) {
+                states[`radio_${index}`] = radio.value;
+            }
+        });
+        const textInput = row.querySelector('input[type="text"]');
+        if (textInput) {
+            states[`text_${index}`] = textInput.value;
+        }
+    });
+    return states;
+}
+
+function restoreState(states) {
+    document.querySelectorAll('#checklistTable tbody tr').forEach((row, index) => {
+        const radios = row.querySelectorAll('input[type="radio"]');
+        radios.forEach(radio => {
+            if (states[`radio_${index}`] && radio.value === states[`radio_${index}`]) {
+                radio.checked = true;
+            }
+        });
+        const textInput = row.querySelector('input[type="text"]');
+        if (textInput && states[`text_${index}`] !== undefined) {
+            textInput.value = states[`text_${index}`];
+        }
+    });
+}
+
+function applyFilter() {
+    const previousStates = saveCurrentState();
+
+    const selectedGrades = Array.from(document.querySelectorAll('.gradeFilter:checked')).map(cb => cb.value);
+
+    const rows = Array.from(document.querySelectorAll('#checklistTable tbody tr'));
+
+    // 필터 적용
+    rows.forEach(row => {
+        const grade = row.children[1].textContent.trim();
+        if (selectedGrades.includes(grade)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    restoreState(previousStates);
+
+    // 병합 전 초기화
+    rows.forEach(row => {
+        for (let cell of row.cells) {
+            cell.rowSpan = 1;
+            cell.style.display = "";
+        }
+    });
+
+    // Helper
+    function cellText(row, idx) {
+        return row.children[idx].innerText.trim();
+    }
+
+    const visible = rows.map(row => row.style.display !== 'none');
+
+    // 병합 함수
+    function mergeColumn(colIdx, sameGroup) {
+        let lastVisibleRow = null;
+        let span = 1;
+
+        rows.forEach((row, i) => {
+            if (!visible[i]) return;
+
+            const currentCell = row.children[colIdx];
+            if (!lastVisibleRow) {
+                lastVisibleRow = row;
+                span = 1;
+                return;
+            }
+
+            if (cellText(row, colIdx) === cellText(lastVisibleRow, colIdx) && sameGroup(row, i, lastVisibleRow)) {
+                span++;
+                currentCell.style.display = "none";
+                lastVisibleRow.children[colIdx].rowSpan = span;
+            } else {
+                lastVisibleRow = row;
+                span = 1;
+            }
+        });
+    }
+
+    // 병합 적용
+    mergeColumn(0, () => true); // 영역 병합
+    mergeColumn(1, (row, i, lastRow) => cellText(row, 0) === cellText(lastRow, 0)); // 학년군 병합
+}
+</script>
+
+</body>
+
+</html>

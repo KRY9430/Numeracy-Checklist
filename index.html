@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>문해력·수리력 체크리스트 통합</title>
+<style>
+header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+header h1 {
+    font-size: 28px;
+    margin: 20px 10px 20px 20px;
+}
+#backButton {
+    font-size: 28px;
+    padding: 6px 12px;
+    margin: 0;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#backButton.hidden {
+    display: none;
+}
+button.select-mode {
+    font-size: 24px;
+    padding: 20px;
+    margin: 20px;
+}
+.hidden {
+    display: none;
+}
+iframe {
+    width: 100%;
+    height: 90vh;
+    border: none;
+}
+</style>
+</head>
+<body>
+<header>
+    <h1>문해력·수리력 체크리스트</h1>
+    <button id="backButton" class="hidden" onclick="goBack()" aria-label="홈으로">↩</button>
+</header>
+
+<div id="modeSelection">
+    <button class="select-mode" onclick="showChecklist('literacy')">문해력</button>
+    <button class="select-mode" onclick="showChecklist('numeracy')">수리력</button>
+</div>
+
+<div id="literacySection" class="hidden">
+    <iframe src="문해력 체크리스트 프로토타입 (250701).html"></iframe>
+</div>
+<div id="numeracySection" class="hidden">
+    <iframe src="수리력 체크리스트 프로토타입 (250630).html"></iframe>
+</div>
+
+<script>
+function showChecklist(type) {
+    document.getElementById('modeSelection').classList.add('hidden');
+    document.getElementById('backButton').classList.remove('hidden');
+    if (type === 'literacy') {
+        document.getElementById('literacySection').classList.remove('hidden');
+    } else if (type === 'numeracy') {
+        document.getElementById('numeracySection').classList.remove('hidden');
+    }
+}
+
+function goBack() {
+    document.getElementById('literacySection').classList.add('hidden');
+    document.getElementById('numeracySection').classList.add('hidden');
+    document.getElementById('modeSelection').classList.remove('hidden');
+    document.getElementById('backButton').classList.add('hidden');
+}
+</script>
+</body>
+</html>
